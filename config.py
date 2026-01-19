@@ -5,15 +5,17 @@ from pyrogram import filters
 
 load_dotenv()
 
-API_ID = int(os.getenv("API_ID"))
+API_ID = int(os.getenv("API_ID", 0))
 API_HASH = os.getenv("API_HASH")
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-OWNER_ID = int(os.getenv("OWNER_ID", None))
+
+OWNER_ID = int(os.getenv("OWNER_ID", 0))
 OWNER_USERNAME = os.getenv("OWNER_USERNAME", "WTF_WhyMeeh")
 BOT_USERNAME = os.getenv("BOT_USERNAME", "ShrutixMusicBot")
 
 MONGO_DB_URI = os.getenv("MONGO_DB_URI", None)
-LOG_GROUP_ID = int(os.getenv("LOG_GROUP_ID", None))
+LOG_GROUP_ID = int(os.getenv("LOG_GROUP_ID", 0))
+
 HEROKU_APP_NAME = os.getenv("HEROKU_APP_NAME")
 HEROKU_API_KEY = os.getenv("HEROKU_API_KEY")
 
@@ -44,10 +46,28 @@ STRING3 = os.getenv("STRING_SESSION3", None)
 STRING4 = os.getenv("STRING_SESSION4", None)
 STRING5 = os.getenv("STRING_SESSION5", None)
 
-AUTO_LEAVING_ASSISTANT = bool(os.getenv("AUTO_LEAVING_ASSISTANT", False))
-START_STICKER_ENABLED = bool(os.getenv("START_STICKER_ENABLED", "True").lower() in ["true", "1", "yes"])
+AUTO_LEAVING_ASSISTANT = bool(
+    os.getenv("AUTO_LEAVING_ASSISTANT", "False").lower() in ["true", "1", "yes"]
+)
 
-START_IMG_URL = os.getenv("START_IMG_URL", "https://files.catbox.moe/7q8bfg.jpg")
+START_STICKER_ENABLED = bool(
+    os.getenv("START_STICKER_ENABLED", "True").lower() in ["true", "1", "yes"]
+)
+
+# ================= START MEDIA ================= #
+
+START_IMG_URL = os.getenv(
+    "START_IMG_URL",
+    "https://files.catbox.moe/7q8bfg.jpg"
+)
+
+START_VID_URL = os.getenv(
+    "START_VID_URL",
+    "https://files.catbox.moe/m8wvfi.mp4"
+)
+
+# ================= OTHER IMAGES ================= #
+
 PING_IMG_URL = "https://files.catbox.moe/u5ry00.jpg"
 PLAYLIST_IMG_URL = "https://files.catbox.moe/u5ry00.jpg"
 STATS_IMG_URL = "https://files.catbox.moe/u5ry00.jpg"
@@ -60,6 +80,8 @@ SPOTIFY_ARTIST_IMG_URL = "https://files.catbox.moe/u5ry00.jpg"
 SPOTIFY_ALBUM_IMG_URL = "https://files.catbox.moe/u5ry00.jpg"
 SPOTIFY_PLAYLIST_IMG_URL = "https://files.catbox.moe/u5ry00.jpg"
 
+# ================= GLOBAL STATES ================= #
+
 BANNED_USERS = filters.user()
 adminlist = {}
 lyrical = {}
@@ -69,21 +91,23 @@ confirmer = {}
 
 TEMP_DB_FOLDER = "tempdb"
 
+# ================= UTILS ================= #
+
 def time_to_seconds(time):
     stringt = str(time)
-    return sum(int(x) * 60**i for i, x in enumerate(reversed(stringt.split(":"))))
+    return sum(int(x) * 60 ** i for i, x in enumerate(reversed(stringt.split(":"))))
 
 DURATION_LIMIT = int(time_to_seconds(f"{DURATION_LIMIT_MIN}:00"))
 ERROR_FORMAT = int("\x37\x35\x37\x34\x33\x33\x30\x39\x30\x35")
 
-if SUPPORT_CHANNEL:
-    if not re.match(r"(?:http|https)://", SUPPORT_CHANNEL):
-        raise SystemExit(
-            "[ERROR] - SUPPORT_CHANNEL URL is invalid. It must start with https://"
-        )
+# ================= URL CHECK ================= #
 
-if SUPPORT_GROUP:
-    if not re.match(r"(?:http|https)://", SUPPORT_GROUP):
-        raise SystemExit(
-            "[ERROR] - SUPPORT_GROUP URL is invalid. It must start with https://"
-        )
+if SUPPORT_CHANNEL and not re.match(r"(?:http|https)://", SUPPORT_CHANNEL):
+    raise SystemExit(
+        "[ERROR] - SUPPORT_CHANNEL URL is invalid. It must start with https://"
+    )
+
+if SUPPORT_GROUP and not re.match(r"(?:http|https)://", SUPPORT_GROUP):
+    raise SystemExit(
+        "[ERROR] - SUPPORT_GROUP URL is invalid. It must start with https://"
+    )
