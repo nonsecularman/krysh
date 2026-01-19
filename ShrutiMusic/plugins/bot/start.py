@@ -27,6 +27,25 @@ from config import BANNED_USERS
 from strings import get_string
 
 
+# ================= SAFE VIDEO SENDER ================= #
+async def safe_reply_video(message, video, caption, reply_markup=None):
+    try:
+        return await message.reply_video(
+            video=video,
+            caption=caption,
+            reply_markup=reply_markup,
+            has_spoiler=True,
+        )
+    except Exception:
+        return await message.reply_photo(
+            photo=config.START_IMG_URL,
+            caption=caption,
+            reply_markup=reply_markup,
+            has_spoiler=True,
+        )
+
+
+# ================= DATA ================= #
 NAND_YADUWANSHI_EFFECTS: Final[list[str]] = [
     "5104841245755180586",
     "5107584321108051014",
@@ -40,14 +59,6 @@ RANDOM_STICKERS = [
     "CAACAgUAAxkBAAEEnzNor88uPuVTSyRImyVXsu1pqrpRLgACKRMAAvOEEFUpvggmgDu6bx4E",
     "CAACAgUAAxkBAAEEnzRor880z_spEYEnEfyFXN55tNwydQACIxUAAosKEVUB8iqZMVYroR4E"
 ]
-
-
-def get_random_effect_id():
-    return int(random.choice(NAND_YADUWANSHI_EFFECTS))
-
-
-def start_media():
-    return getattr(config, "START_VID_URL", config.START_IMG_URL)
 
 
 # ================= PRIVATE START ================= #
@@ -65,11 +76,11 @@ async def start_pm(client, message: Message, _):
 
         if name.startswith("help"):
             keyboard = help_pannel_page1(_)
-            return await message.reply_video(
-                video=start_media(),
+            return await safe_reply_video(
+                message,
+                video=config.START_VID_URL,
                 caption=_["help_1"].format(config.SUPPORT_GROUP),
                 reply_markup=keyboard,
-                has_spoiler=True,
             )
 
         if name.startswith("sud"):
@@ -112,13 +123,13 @@ async def start_pm(client, message: Message, _):
     out = private_panel(_)
     UP, CPU, RAM, DISK = await bot_sys_stats()
 
-    await message.reply_video(
-        video=start_media(),
+    await safe_reply_video(
+        message,
+        video=config.START_VID_URL,
         caption=_["start_2"].format(
             message.from_user.mention, app.mention, UP, DISK, CPU, RAM
         ),
         reply_markup=InlineKeyboardMarkup(out),
-        has_spoiler=True,
     )
 
 
@@ -133,11 +144,11 @@ async def start_gp(client, message: Message, _):
     out = start_panel(_)
     uptime = int(time.time() - _boot_)
 
-    await message.reply_video(
-        video=start_media(),
+    await safe_reply_video(
+        message,
+        video=config.START_VID_URL,
         caption=_["start_1"].format(app.mention, get_readable_time(uptime)),
         reply_markup=InlineKeyboardMarkup(out),
-        has_spoiler=True,
     )
 
     await add_served_chat(message.chat.id)
@@ -170,8 +181,9 @@ async def welcome(client, message: Message):
 
                 out = start_panel(_)
 
-                await message.reply_video(
-                    video=start_media(),
+                await safe_reply_video(
+                    message,
+                    video=config.START_VID_URL,
                     caption=_["start_3"].format(
                         message.from_user.first_name,
                         app.mention,
@@ -179,7 +191,6 @@ async def welcome(client, message: Message):
                         app.mention,
                     ),
                     reply_markup=InlineKeyboardMarkup(out),
-                    has_spoiler=True,
                 )
 
                 await add_served_chat(message.chat.id)
