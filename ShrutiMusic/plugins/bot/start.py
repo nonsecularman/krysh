@@ -41,6 +41,7 @@ RANDOM_STICKERS = [
     "CAACAgUAAxkBAAEEnzRor880z_spEYEnEfyFXN55tNwydQACIxUAAosKEVUB8iqZMVYroR4E"
 ]
 
+
 def get_random_effect_id():
     return int(random.choice(NAND_YADUWANSHI_EFFECTS))
 
@@ -54,7 +55,7 @@ def start_media():
 @LanguageStart
 async def start_pm(client, message: Message, _):
 
-    if getattr(config, 'START_STICKER_ENABLED', True):
+    if getattr(config, "START_STICKER_ENABLED", True):
         await message.reply_sticker(sticker=random.choice(RANDOM_STICKERS))
 
     await add_served_user(message.from_user.id)
@@ -69,7 +70,6 @@ async def start_pm(client, message: Message, _):
                 caption=_["help_1"].format(config.SUPPORT_GROUP),
                 reply_markup=keyboard,
                 has_spoiler=True,
-                message_effect_id=get_random_effect_id(),
             )
 
         if name.startswith("sud"):
@@ -119,7 +119,6 @@ async def start_pm(client, message: Message, _):
         ),
         reply_markup=InlineKeyboardMarkup(out),
         has_spoiler=True,
-        message_effect_id=get_random_effect_id(),
     )
 
 
@@ -128,7 +127,7 @@ async def start_pm(client, message: Message, _):
 @LanguageStart
 async def start_gp(client, message: Message, _):
 
-    if getattr(config, 'START_STICKER_ENABLED', True):
+    if getattr(config, "START_STICKER_ENABLED", True):
         await message.reply_sticker(sticker=random.choice(RANDOM_STICKERS))
 
     out = start_panel(_)
@@ -139,7 +138,6 @@ async def start_gp(client, message: Message, _):
         caption=_["start_1"].format(app.mention, get_readable_time(uptime)),
         reply_markup=InlineKeyboardMarkup(out),
         has_spoiler=True,
-        message_effect_id=get_random_effect_id(),
     )
 
     await add_served_chat(message.chat.id)
@@ -167,7 +165,7 @@ async def welcome(client, message: Message):
                     await app.leave_chat(message.chat.id)
                     return
 
-                if getattr(config, 'START_STICKER_ENABLED', True):
+                if getattr(config, "START_STICKER_ENABLED", True):
                     await message.reply_sticker(sticker=random.choice(RANDOM_STICKERS))
 
                 out = start_panel(_)
@@ -182,7 +180,6 @@ async def welcome(client, message: Message):
                     ),
                     reply_markup=InlineKeyboardMarkup(out),
                     has_spoiler=True,
-                    message_effect_id=get_random_effect_id(),
                 )
 
                 await add_served_chat(message.chat.id)
