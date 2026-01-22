@@ -42,7 +42,7 @@ PRIVACY_LINK = os.getenv("PRIVACY_LINK", "https://graph.org/Privacy-Policy-05-01
 
 # ================= LIMITS ================= #
 
-DURATION_LIMIT_MIN = int(os.getenv("DURATION_LIMIT", 300))
+DURATION_LIMIT_MIN = int(os.getenv("DURATION_LIMIT", 99999))
 PLAYLIST_FETCH_LIMIT = int(os.getenv("PLAYLIST_FETCH_LIMIT", 25))
 
 TG_AUDIO_FILESIZE_LIMIT = int(os.getenv("TG_AUDIO_FILESIZE_LIMIT", 104857600))
