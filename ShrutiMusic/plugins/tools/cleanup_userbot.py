@@ -1,0 +1,60 @@
+import os
+import asyncio
+from pyrogram import Client, filters
+from pyrogram.errors import FloodWait
+
+# ===== READ FROM HEROKU CONFIG VARS =====
+API_ID = int(os.environ.get("API_ID"))
+API_HASH = os.environ.get("API_HASH")
+SESSION_STRING = os.environ.get("SESSION_STRING")
+OWNER_ID = int(os.environ.get("OWNER_ID"))
+# ======================================
+
+app = Client(
+    "cleanup-userbot",
+    api_id=API_ID,
+    api_hash=API_HASH,
+    session_string=SESSION_STRING
+)
+
+@app.on_message(filters.command(["cleanup", "clearowner"]) & filters.group)
+async def cleanup_owner_commands(client, message):
+    # only owner can run
+    if not message.from_user or message.from_user.id != OWNER_ID:
+        return
+
+    chat_id = message.chat.id
+    command_id = message.id
+    deleted = 0
+
+    async for msg in client.get_chat_history(chat_id, limit=500):
+        try:
+            # skip current cleanup command
+            if msg.id == command_id:
+                continue
+
+            if (
+                msg.from_user
+                and msg.from_user.id == OWNER_ID
+                and msg.text
+                and msg.text.startswith("/")
+            ):
+                await msg.delete()
+                deleted += 1
+                await asyncio.sleep(0.4)
+
+        except FloodWait as e:
+            await asyncio.sleep(e.value)
+
+        except Exception:
+            continue
+
+    try:
+        await message.reply_text(
+            f"✅ Cleanup done\n🗑 Deleted {deleted} command messages"
+        )
+    except:
+        pass
+
+
+app.run()
