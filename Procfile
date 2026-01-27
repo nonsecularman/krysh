@@ -1,1 +1,3 @@
-worker: python cleanup_userbot.py
+worker: bash start
+
+
