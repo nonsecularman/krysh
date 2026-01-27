@@ -1,32 +1,24 @@
-import os
 import asyncio
-from pyrogram import Client, filters
+from pyrogram import filters
 from pyrogram.errors import FloodWait
+from ShrutiMusic.core.userbot import assistants  # 👈 ASSISTANT client
 
-API_ID = int(os.environ.get("API_ID"))
-API_HASH = os.environ.get("API_HASH")
-SESSION_STRING = os.environ.get("SESSION_STRING")
+# first assistant userbot
+user = assistants[0]
 
-app = Client(
-    "cleanup-userbot",
-    api_id=API_ID,
-    api_hash=API_HASH,
-    session_string=SESSION_STRING
-)
-
-@app.on_message(filters.command(["cleanup", "clearowner"]) & filters.group)
-async def cleanup_owner_commands(client, message):
+@user.on_message(filters.command(["cleanup", "clearowner"]) & filters.group)
+async def cleanup_userbot_handler(client, message):
     if not message.from_user:
         return
 
-    TARGET_ID = message.from_user.id  # 👈 dynamic owner
+    TARGET_ID = message.from_user.id  # 👈 jisne command diya
     chat_id = message.chat.id
-    command_id = message.id
+    cmd_id = message.id
     deleted = 0
 
     async for msg in client.get_chat_history(chat_id, limit=500):
         try:
-            if msg.id == command_id:
+            if msg.id == cmd_id:
                 continue
 
             if (
@@ -50,6 +42,3 @@ async def cleanup_owner_commands(client, message):
         )
     except:
         pass
-
-
-app.run()
