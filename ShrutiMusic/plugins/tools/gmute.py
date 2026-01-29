@@ -4,7 +4,7 @@ import os
 from pyrogram import filters
 from pyrogram.types import Message
 
-from RiyaMusic import app
+from ShrutiMusic import app
 from config import OWNER_ID
 
 
