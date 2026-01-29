@@ -5,7 +5,6 @@ from pyrogram import filters
 from pyrogram.types import Message
 
 from ShrutiMusic import app
-from config import LOGGER_ID
 
 
 # Function to download and send Instagram media
