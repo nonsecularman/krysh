@@ -2,16 +2,13 @@ from pyrogram import filters
 from pyrogram.types import Message
 
 from ShrutiMusic import app
-from config import OWNER_ID
-
-# ✅ Real sudo list from sudoers plugin
-from ShrutiMusic.plugins.sudoers import SUDOERS
+from config import OWNER_ID, SUDO_USERS   # ✅ correct
 
 GMUTED_USERS = set()
 
 
 def is_allowed(user_id: int):
-    return user_id == OWNER_ID or user_id in SUDOERS
+    return user_id == OWNER_ID or user_id in SUDO_USERS
 
 
 @app.on_message(filters.command("gmute") & filters.group)
