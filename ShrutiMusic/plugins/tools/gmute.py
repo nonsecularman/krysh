@@ -1,19 +1,23 @@
-
 from pyrogram import filters
 from pyrogram.types import Message
 
-from ShurtiMusic import app
-from config import OWNER_ID
+from RiyaMusic import app
+from config import OWNER_ID, SUDO_USERS   # ✅ sudo list config se
 
 GMUTED_USERS = set()
 
 
-# ✅ GMUTE Command
+# ✅ Function: Owner or Sudo Check
+def is_allowed(user_id: int):
+    return user_id == OWNER_ID or user_id in SUDO_USERS
+
+
+# ✅ GMUTE Command (Owner + Sudo)
 @app.on_message(filters.command("gmute") & filters.group)
 async def gmute_user(_, message: Message):
 
-    if message.from_user.id != OWNER_ID:
-        return await message.reply_text("❌ Only Owner can gmute!")
+    if not is_allowed(message.from_user.id):
+        return await message.reply_text("❌ Only Owner or Sudo Users can gmute!")
 
     if not message.reply_to_message:
         return await message.reply_text("⚠️ Reply to user then /gmute")
@@ -24,12 +28,12 @@ async def gmute_user(_, message: Message):
     await message.reply_text(f"✅ GMUTED!\nUser: `{user_id}`")
 
 
-# ✅ UNGMUTE Command
+# ✅ UNGMUTE Command (Owner + Sudo)
 @app.on_message(filters.command("ungmute") & filters.group)
 async def ungmute_user(_, message: Message):
 
-    if message.from_user.id != OWNER_ID:
-        return await message.reply_text("❌ Only Owner can ungmute!")
+    if not is_allowed(message.from_user.id):
+        return await message.reply_text("❌ Only Owner or Sudo Users can ungmute!")
 
     if not message.reply_to_message:
         return await message.reply_text("⚠️ Reply to user then /ungmute")
@@ -40,18 +44,16 @@ async def ungmute_user(_, message: Message):
     await message.reply_text("✅ UNGMUTED!")
 
 
-# ✅ Delete Muted User Messages (SAFE MODE)
-# group=999 → सबसे last में चलेगा
+# ✅ Delete Muted Messages (Ping/Stats Safe)
 @app.on_message(filters.group, group=999)
 async def delete_gmuted(_, message: Message):
 
     if not message.from_user:
         return
 
-    # अगर user muted है
     if message.from_user.id in GMUTED_USERS:
 
-        # ✅ Commands को touch मत करो (/ping /stats safe)
+        # ✅ Commands safe रहें
         if message.text and message.text.startswith("/"):
             return
 
