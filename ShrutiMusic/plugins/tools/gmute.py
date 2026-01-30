@@ -1,23 +1,29 @@
 from pyrogram import filters
 from pyrogram.types import Message
 
-from RiyaMusic import app
-from config import OWNER_ID, SUDO_USERS   # ✅ sudo list config se
+from ShrutiMusic import app
+from config import OWNER_ID
+
+# अगर sudo list config में है तो import करो
+try:
+    from config import SUDO_USERS
+except:
+    SUDO_USERS = []
 
 GMUTED_USERS = set()
 
 
-# ✅ Function: Owner or Sudo Check
+# ✅ Owner or Sudo Check
 def is_allowed(user_id: int):
     return user_id == OWNER_ID or user_id in SUDO_USERS
 
 
-# ✅ GMUTE Command (Owner + Sudo)
+# ✅ GMUTE Command
 @app.on_message(filters.command("gmute") & filters.group)
 async def gmute_user(_, message: Message):
 
     if not is_allowed(message.from_user.id):
-        return await message.reply_text("❌ Only Owner or Sudo Users can gmute!")
+        return await message.reply_text("❌ Only Owner or Sudo can gmute!")
 
     if not message.reply_to_message:
         return await message.reply_text("⚠️ Reply to user then /gmute")
@@ -28,12 +34,12 @@ async def gmute_user(_, message: Message):
     await message.reply_text(f"✅ GMUTED!\nUser: `{user_id}`")
 
 
-# ✅ UNGMUTE Command (Owner + Sudo)
+# ✅ UNGMUTE Command
 @app.on_message(filters.command("ungmute") & filters.group)
 async def ungmute_user(_, message: Message):
 
     if not is_allowed(message.from_user.id):
-        return await message.reply_text("❌ Only Owner or Sudo Users can ungmute!")
+        return await message.reply_text("❌ Only Owner or Sudo can ungmute!")
 
     if not message.reply_to_message:
         return await message.reply_text("⚠️ Reply to user then /ungmute")
@@ -53,7 +59,7 @@ async def delete_gmuted(_, message: Message):
 
     if message.from_user.id in GMUTED_USERS:
 
-        # ✅ Commands safe रहें
+        # ✅ Commands safe
         if message.text and message.text.startswith("/"):
             return
 
