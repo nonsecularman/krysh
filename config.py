@@ -130,8 +130,3 @@ if SUPPORT_GROUP and not re.match(r"(?:http|https)://", SUPPORT_GROUP):
         "[ERROR] - SUPPORT_GROUP URL must start with https://"
     )
     
-# ================= SUDO USERS ================= #
-
-SUDO_USERS = list(
-    map(int, os.getenv("SUDO_USERS", "").split())
-) if os.getenv("SUDO_USERS") else []
