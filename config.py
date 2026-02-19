@@ -11,7 +11,7 @@ API_ID = int(os.getenv("API_ID", 0))
 API_HASH = os.getenv("API_HASH")
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 
-OWNER_ID = int(os.getenv("OWNER_ID", 0))   # ✅ FIXED (typo removed)
+OWNER_ID = int(os.getenv("7519668949", 0))   # ✅ FIXED (typo removed)
 
 # ================= SUDO USERS ================= #
 
