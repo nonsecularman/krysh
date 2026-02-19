@@ -11,11 +11,19 @@ API_ID = int(os.getenv("API_ID", 0))
 API_HASH = os.getenv("API_HASH")
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 
-OWNER_ID = int(os.getenv("7519668949", 0))   # ✅ FIXED (typo removed)
+# ✅ FIXED OWNER_ID (env var सही तरीके से)
+OWNER_ID = int(os.getenv("OWNER_ID", 0))
 
 # ================= SUDO USERS ================= #
 
-SUDO_USERS = set()
+# ✅ FIXED SUDO_USERS (env से multiple ids लेगा)
+SUDO_USERS = set(
+    map(int, os.getenv("SUDO_USERS", "").split())
+)
+
+# अगर SUDO_USERS खाली है तो OWNER_ID auto add हो जाए
+if OWNER_ID:
+    SUDO_USERS.add(OWNER_ID)
 
 OWNER_USERNAME = os.getenv("OWNER_USERNAME", "WTF_WhyMeeh")
 BOT_USERNAME = os.getenv("BOT_USERNAME", "ShrutixMusicBot")
@@ -134,4 +142,3 @@ if SUPPORT_GROUP and not re.match(r"(?:http|https)://", SUPPORT_GROUP):
     raise SystemExit(
         "[ERROR] - SUPPORT_GROUP URL must start with https://"
     )
-    
