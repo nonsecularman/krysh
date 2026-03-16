@@ -2,9 +2,9 @@
 #
 # Copyright (C) 2021-2022 by TheAloneteam@Github, < https://github.com/TheAloneTeam >.
 #
-# This file is part of < https://github.com/TheAloneTeam/AloneMusic > project,
+# This file is part of < https://github.com/TheAloneTeam/ShrutiMusic > project,
 # and is released under the "GNU v3.0 License Agreement".
-# Please see < https://github.com/TheAloneTeam/AloneMusic/blob/master/LICENSE >
+# Please see < https://github.com/TheAloneTeam/ShrutiMusic/blob/master/LICENSE >
 #
 # All rights reserved.
 
@@ -19,8 +19,8 @@ from py_yt import VideosSearch
 from pyrogram.enums import MessageEntityType
 from pyrogram.types import Message
 
-from AloneMusic import LOGGER
-from AloneMusic.utils.formatters import time_to_seconds
+from ShrutiMusic import LOGGER
+from ShrutiMusic.utils.formatters import time_to_seconds
 
 YOUR_API_URL = None
 FALLBACK_API_URL = "https://shrutibots.site"
@@ -28,7 +28,7 @@ FALLBACK_API_URL = "https://shrutibots.site"
 
 async def load_api_url():
     global YOUR_API_URL
-    logger = LOGGER("AloneMusic.platforms.Youtube.py")
+    logger = LOGGER("ShrutiMusic.platforms.Youtube.py")
 
     try:
         async with aiohttp.ClientSession() as session:
